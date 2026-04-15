@@ -8,3 +8,7 @@
 
 ## Hive
 -keep class * extends com.google.protobuf.GeneratedMessageLite { *; }
+
+## Google Play Core (fix SplitCompatApplication missing)
+-keep class com.google.android.play.core.** { *; }
+-dontwarn com.google.android.play.core.**
