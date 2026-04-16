@@ -9,6 +9,12 @@ import 'features/schedule/models/schedule_item.dart';
 import 'features/meal_plan/models/meal_plan.dart';
 import 'features/diary/models/diary_entry.dart';
 import 'features/mood_tracker/models/mood_record.dart';
+import 'features/settings/models/category.dart';
+import 'features/books/models/book.dart';
+import 'features/books/models/book_category.dart';
+import 'features/belongings/models/belonging.dart';
+import 'features/classes/models/class_room.dart';
+import 'features/classes/models/class_note.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +28,14 @@ Future<void> main() async {
   Hive.registerAdapter(MealPlanAdapter());
   Hive.registerAdapter(DiaryEntryAdapter());
   Hive.registerAdapter(MoodRecordAdapter());
+  Hive.registerAdapter(CategoryAdapter());
+  Hive.registerAdapter(BookCategoryAdapter());
+  Hive.registerAdapter(BookAdapter());
+  Hive.registerAdapter(BelongingStatusAdapter());
+  Hive.registerAdapter(BelongingAdapter());
+  Hive.registerAdapter(ClassRoomAdapter());
+  Hive.registerAdapter(ClassNoteAdapter());
+  Hive.registerAdapter(NoteTagAdapter());
 
   FlutterNativeSplash.remove();
   runApp(const ProviderScope(child: App()));

@@ -16,8 +16,8 @@ import '../widgets/time_slot_card.dart';
 class ScheduleScreen extends ConsumerWidget {
   const ScheduleScreen({super.key});
 
-  static const int _startHour = 6;
-  static const int _endHour = 23;
+  static const int _startHour = 0;
+  static const int _endHour = 24;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

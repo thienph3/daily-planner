@@ -4,7 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/theme/app_colors.dart';
 
-/// Layout shell chung chứa BottomNavigationBar kawaii cho 5 tab chính.
+/// Layout shell chung chứa BottomNavigationBar kawaii.
+/// Giảm xuống 4 tab: To-Do, Lịch trình, Bữa ăn, Thêm.
+/// Nhật ký, Mood, Tiến độ, Cài đặt nằm trong tab "Thêm".
 class MainShell extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
@@ -41,16 +43,8 @@ class MainShell extends StatelessWidget {
             label: 'Bữa ăn',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.book_outlined),
-            label: 'Nhật ký',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_emotions_outlined),
-            label: 'Mood',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart_rounded),
-            label: 'Tiến độ',
+            icon: Icon(Icons.grid_view_rounded),
+            label: 'Thêm',
           ),
         ],
       ),

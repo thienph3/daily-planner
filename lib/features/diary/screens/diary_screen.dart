@@ -85,7 +85,7 @@ class _DiaryScreenState extends ConsumerState<DiaryScreen> {
               ? _buildEmptyState()
               : _buildList(entries),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/diary/editor'),
+        onPressed: () => context.push('/diary/editor'),
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.edit_rounded, color: Colors.white),
       ),
@@ -110,7 +110,7 @@ class _DiaryScreenState extends ConsumerState<DiaryScreen> {
         final entry = entries[index];
         return DiaryCard(
           entry: entry,
-          onTap: () => context.go('/diary/editor', extra: entry),
+          onTap: () => context.push('/diary/editor', extra: entry),
           onDelete: () => _confirmDelete(entry),
         );
       },

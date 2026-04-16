@@ -7,6 +7,12 @@ class HiveHelper {
   static const String mealPlanBox = 'meal_plans';
   static const String diaryBox = 'diary_entries';
   static const String moodBox = 'mood_records';
+  static const String categoryBox = 'categories';
+  static const String bookBox = 'books';
+  static const String bookCategoryBox = 'book_categories';
+  static const String belongingBox = 'belongings';
+  static const String classRoomBox = 'class_rooms';
+  static const String classNoteBox = 'class_notes';
 
   /// Mở box theo tên, trả về box đã mở nếu đã tồn tại
   static Future<Box<T>> openBox<T>(String boxName) async {

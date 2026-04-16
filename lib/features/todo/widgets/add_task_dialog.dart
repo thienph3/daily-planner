@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../settings/providers/category_provider.dart';
 
 const _priorityOptions = [
   (value: 0, label: 'Thấp'),
@@ -12,26 +14,24 @@ const _priorityOptions = [
 
 /// Dialog tạo task mới.
 /// Trả về Map với keys: title, description, priority, category khi xác nhận.
-/// Trả về null khi hủy.
-class AddTaskDialog extends StatefulWidget {
+class AddTaskDialog extends ConsumerStatefulWidget {
   const AddTaskDialog({super.key});
 
   @override
-  State<AddTaskDialog> createState() => _AddTaskDialogState();
+  ConsumerState<AddTaskDialog> createState() => _AddTaskDialogState();
 }
 
-class _AddTaskDialogState extends State<AddTaskDialog> {
+class _AddTaskDialogState extends ConsumerState<AddTaskDialog> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _categoryController = TextEditingController();
   int _priority = 0;
+  String _selectedCategory = '';
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
-    _categoryController.dispose();
     super.dispose();
   }
 
@@ -42,13 +42,14 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
       'title': _titleController.text.trim(),
       'description': _descriptionController.text.trim(),
       'priority': _priority,
-      'category': _categoryController.text.trim(),
+      'category': _selectedCategory,
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final categories = ref.watch(categoryProvider);
 
     return AlertDialog(
       shape: RoundedRectangleBorder(
@@ -97,11 +98,20 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
                 },
               ),
               const SizedBox(height: AppSpacing.gapItem),
-              TextFormField(
-                controller: _categoryController,
+              DropdownButtonFormField<String>(
+                initialValue: _selectedCategory.isEmpty ? null : _selectedCategory,
                 decoration: _inputDecoration('Danh mục'),
-                textInputAction: TextInputAction.done,
-                onFieldSubmitted: (_) => _submit(),
+                items: [
+                  const DropdownMenuItem(
+                      value: '', child: Text('Không có danh mục')),
+                  ...categories.map((cat) => DropdownMenuItem(
+                        value: cat.name,
+                        child: Text('${cat.emoji} ${cat.name}'),
+                      )),
+                ],
+                onChanged: (value) {
+                  setState(() => _selectedCategory = value ?? '');
+                },
               ),
             ],
           ),

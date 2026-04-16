@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../settings/providers/category_provider.dart';
 import '../models/task.dart';
 
 const _priorityOptions = [
@@ -12,37 +14,36 @@ const _priorityOptions = [
 ];
 
 /// Dialog sửa task, pre-fill thông tin hiện tại.
-/// Trả về Task đã cập nhật khi xác nhận, null khi hủy.
-class EditTaskDialog extends StatefulWidget {
+class EditTaskDialog extends ConsumerStatefulWidget {
   final Task task;
 
   const EditTaskDialog({super.key, required this.task});
 
   @override
-  State<EditTaskDialog> createState() => _EditTaskDialogState();
+  ConsumerState<EditTaskDialog> createState() => _EditTaskDialogState();
 }
 
-class _EditTaskDialogState extends State<EditTaskDialog> {
+class _EditTaskDialogState extends ConsumerState<EditTaskDialog> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
-  late final TextEditingController _categoryController;
   late int _priority;
+  late String _selectedCategory;
 
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.task.title);
-    _descriptionController = TextEditingController(text: widget.task.description);
-    _categoryController = TextEditingController(text: widget.task.category);
+    _descriptionController =
+        TextEditingController(text: widget.task.description);
     _priority = widget.task.priority;
+    _selectedCategory = widget.task.category;
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
-    _categoryController.dispose();
     super.dispose();
   }
 
@@ -53,7 +54,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
       priority: _priority,
-      category: _categoryController.text.trim(),
+      category: _selectedCategory,
     );
     Navigator.of(context).pop<Task>(updatedTask);
   }
@@ -61,6 +62,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final categories = ref.watch(categoryProvider);
 
     return AlertDialog(
       shape: RoundedRectangleBorder(
@@ -109,11 +111,22 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                 },
               ),
               const SizedBox(height: AppSpacing.gapItem),
-              TextFormField(
-                controller: _categoryController,
+              DropdownButtonFormField<String>(
+                initialValue: _selectedCategory.isEmpty
+                    ? null
+                    : _selectedCategory,
                 decoration: _inputDecoration('Danh mục'),
-                textInputAction: TextInputAction.done,
-                onFieldSubmitted: (_) => _submit(),
+                items: [
+                  const DropdownMenuItem(
+                      value: '', child: Text('Không có danh mục')),
+                  ...categories.map((cat) => DropdownMenuItem(
+                        value: cat.name,
+                        child: Text('${cat.emoji} ${cat.name}'),
+                      )),
+                ],
+                onChanged: (value) {
+                  setState(() => _selectedCategory = value ?? '');
+                },
               ),
             ],
           ),
