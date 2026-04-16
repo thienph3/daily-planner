@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'app.dart';
+import 'core/utils/seed_data.dart';
 import 'features/todo/models/task.dart';
 import 'features/schedule/models/schedule_item.dart';
 import 'features/meal_plan/models/meal_plan.dart';
@@ -38,6 +39,9 @@ Future<void> main() async {
   Hive.registerAdapter(ClassRoomAdapter());
   Hive.registerAdapter(ClassNoteAdapter());
   Hive.registerAdapter(NoteTagAdapter());
+
+  // Tạo dữ liệu mẫu cho lần đầu mở app
+  await seedSampleData();
 
   FlutterNativeSplash.remove();
   runApp(const ProviderScope(child: App()));
