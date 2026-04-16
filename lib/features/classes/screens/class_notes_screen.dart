@@ -31,8 +31,10 @@ class ClassNotesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final classes = ref.watch(classRoomProvider);
+    final allNotes = ref.watch(classNoteProvider);
     final classRoom = classes.where((c) => c.id == classId).firstOrNull;
-    final notes = ref.watch(classNoteProvider.notifier).notesForClass(classId);
+    final notes = allNotes.where((n) => n.classId == classId).toList()
+      ..sort((a, b) => b.date.compareTo(a.date));
 
     return Scaffold(
       appBar: AppBar(

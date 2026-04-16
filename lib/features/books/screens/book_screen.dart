@@ -189,7 +189,7 @@ class BookScreen extends ConsumerWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (_) => _BookCategorySheet(categories: categories, ref: ref),
+      builder: (_) => const _BookCategorySheet(),
     );
   }
 }
@@ -256,14 +256,13 @@ class _BookCard extends StatelessWidget {
   }
 }
 
-class _BookCategorySheet extends StatelessWidget {
-  final List<BookCategory> categories;
-  final WidgetRef ref;
-
-  const _BookCategorySheet({required this.categories, required this.ref});
+class _BookCategorySheet extends ConsumerWidget {
+  const _BookCategorySheet();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categories = ref.watch(bookCategoryProvider);
+
     return DraggableScrollableSheet(
       initialChildSize: 0.5,
       minChildSize: 0.3,
@@ -281,7 +280,7 @@ class _BookCategorySheet extends StatelessWidget {
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 IconButton(
                   icon: const Icon(Icons.add_circle_outline),
-                  onPressed: () => _addCategory(context),
+                  onPressed: () => _addCategory(context, ref),
                 ),
               ],
             ),
@@ -303,7 +302,7 @@ class _BookCategorySheet extends StatelessWidget {
                           children: [
                             IconButton(
                               icon: const Icon(Icons.edit_outlined, size: 20),
-                              onPressed: () => _editCategory(context, cat),
+                              onPressed: () => _editCategory(context, ref, cat),
                             ),
                             IconButton(
                               icon: Icon(Icons.delete_outline,
@@ -323,14 +322,14 @@ class _BookCategorySheet extends StatelessWidget {
     );
   }
 
-  Future<void> _addCategory(BuildContext context) async {
+  Future<void> _addCategory(BuildContext context, WidgetRef ref) async {
     final result = await _showCategoryDialog(context, title: 'Thêm danh mục sách');
     if (result != null && result.trim().isNotEmpty) {
       await ref.read(bookCategoryProvider.notifier).add(name: result);
     }
   }
 
-  Future<void> _editCategory(BuildContext context, BookCategory cat) async {
+  Future<void> _editCategory(BuildContext context, WidgetRef ref, BookCategory cat) async {
     final result = await _showCategoryDialog(
       context,
       title: 'Sửa danh mục sách',
