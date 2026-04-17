@@ -43,7 +43,7 @@ class DiaryCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppSpacing.borderRadiusCard),
           ),
-          color: AppColors.surface,
+          color: AppColors.surfaceFor(context),
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.paddingStandard),
             child: Row(
@@ -60,7 +60,7 @@ class DiaryCard extends StatelessWidget {
                         DateFormat('dd/MM/yyyy').format(entry.date),
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppColors.textSecondary,
+                          color: AppColors.textSecondaryFor(context),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -72,7 +72,7 @@ class DiaryCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 14,
-                            color: AppColors.textPrimary,
+                            color: AppColors.textPrimaryFor(context),
                           ),
                         ),
                       ],

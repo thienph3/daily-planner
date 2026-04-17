@@ -99,8 +99,8 @@ class AppTheme {
       tertiary: AppColors.accent,
       surface: AppColors.darkSurface,
       error: AppColors.error,
-      onPrimary: AppColors.darkTextPrimary,
-      onSecondary: AppColors.darkTextPrimary,
+      onPrimary: const Color(0xFF2D2D3F),
+      onSecondary: const Color(0xFF2D2D3F),
       onSurface: AppColors.darkTextPrimary,
       onError: Colors.white,
     ),
@@ -109,7 +109,6 @@ class AppTheme {
       bodyColor: AppColors.darkTextPrimary,
       displayColor: AppColors.darkTextPrimary,
     ),
-    // Card theme — dark surface
     cardTheme: CardThemeData(
       color: AppColors.darkSurface,
       elevation: 2,
@@ -117,9 +116,8 @@ class AppTheme {
         borderRadius: BorderRadius.circular(AppSpacing.borderRadiusCard),
       ),
     ),
-    // AppBar theme — dark
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.darkSurface,
       elevation: 0,
       centerTitle: true,
       titleTextStyle: GoogleFonts.nunito(
@@ -129,11 +127,10 @@ class AppTheme {
       ),
       iconTheme: const IconThemeData(color: AppColors.darkTextPrimary),
     ),
-    // Button theme — giữ nguyên accent
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.darkTextPrimary,
+        foregroundColor: const Color(0xFF2D2D3F),
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSpacing.borderRadiusButton),
@@ -144,10 +141,13 @@ class AppTheme {
         ),
       ),
     ),
-    // Ripple/splash pastel trên nền tối
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: AppColors.darkTextSecondary,
+      ),
+    ),
     splashColor: AppColors.primary.withValues(alpha: 0.3),
     highlightColor: AppColors.primary.withValues(alpha: 0.15),
-    // Input decoration — dark
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppSpacing.borderRadiusInput),
@@ -156,20 +156,65 @@ class AppTheme {
         borderRadius: BorderRadius.circular(AppSpacing.borderRadiusInput),
         borderSide: const BorderSide(color: AppColors.primary),
       ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.borderRadiusInput),
+        borderSide: BorderSide(color: AppColors.darkTextSecondary.withValues(alpha: 0.5)),
+      ),
+      labelStyle: const TextStyle(color: AppColors.darkTextSecondary),
+      hintStyle: TextStyle(color: AppColors.darkTextSecondary.withValues(alpha: 0.6)),
     ),
-    // BottomNavigationBar — dark
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: AppColors.darkSurface,
       selectedItemColor: AppColors.primary,
       unselectedItemColor: AppColors.darkTextSecondary,
       elevation: 0,
     ),
-    // Dialog — dark
     dialogTheme: DialogThemeData(
       backgroundColor: AppColors.darkSurface,
+      titleTextStyle: GoogleFonts.nunito(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+        color: AppColors.darkTextPrimary,
+      ),
+      contentTextStyle: TextStyle(
+        color: AppColors.darkTextPrimary,
+        fontSize: 14,
+      ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.borderRadiusCard),
       ),
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: AppColors.darkSurface,
+      labelStyle: TextStyle(color: AppColors.darkTextPrimary),
+      secondaryLabelStyle: TextStyle(color: AppColors.darkTextPrimary),
+    ),
+    listTileTheme: ListTileThemeData(
+      textColor: AppColors.darkTextPrimary,
+      iconColor: AppColors.darkTextSecondary,
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) return AppColors.primary;
+        return AppColors.darkTextSecondary;
+      }),
+      trackColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppColors.primary.withValues(alpha: 0.4);
+        }
+        return AppColors.darkSurface;
+      }),
+    ),
+    popupMenuTheme: PopupMenuThemeData(
+      color: AppColors.darkSurface,
+      textStyle: TextStyle(color: AppColors.darkTextPrimary),
+    ),
+    dropdownMenuTheme: DropdownMenuThemeData(
+      textStyle: TextStyle(color: AppColors.darkTextPrimary),
+    ),
+    snackBarTheme: SnackBarThemeData(
+      backgroundColor: AppColors.darkSurface,
+      contentTextStyle: TextStyle(color: AppColors.darkTextPrimary),
     ),
   );
 }

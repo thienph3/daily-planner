@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../models/schedule_item.dart';
+import '../../../core/theme/app_colors.dart';
 import 'pastel_color_picker.dart';
 
 /// Dialog thêm/sửa hoạt động. Dùng chung cho cả add và edit.
@@ -53,8 +54,8 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       title: Text(
         _isEditing ? 'Sửa hoạt động' : 'Thêm hoạt động',
-        style: const TextStyle(
-          color: Color(0xFF5C4033),
+        style: TextStyle(
+          color: AppColors.textPrimaryFor(context),
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -75,7 +76,7 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(color: Color(0xFFFFB6C1), width: 2),
+                    borderSide: BorderSide(color: AppColors.primary, width: 2),
                   ),
                 ),
                 validator: (value) {
@@ -115,10 +116,10 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                 ),
               ],
               const SizedBox(height: 16),
-              const Text(
+              Text(
                 'Màu sắc',
                 style: TextStyle(
-                  color: Color(0xFF5C4033),
+                  color: AppColors.textPrimaryFor(context),
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -134,13 +135,13 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Hủy', style: TextStyle(color: Color(0xFF8B7D6B))),
+          child: Text('Hủy', style: TextStyle(color: AppColors.textSecondaryFor(context))),
         ),
         ElevatedButton(
           onPressed: _onSave,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFFB6C1),
-            foregroundColor: const Color(0xFF5C4033),
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.textPrimaryFor(context),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -178,14 +179,14 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
         ),
         child: Row(
           children: [
-            const Icon(Icons.access_time, size: 20, color: Color(0xFF8B7D6B)),
+            Icon(Icons.access_time, size: 20, color: AppColors.textSecondaryFor(context)),
             const SizedBox(width: 8),
-            Text(label, style: const TextStyle(color: Color(0xFF8B7D6B))),
+            Text(label, style: TextStyle(color: AppColors.textSecondaryFor(context))),
             const Spacer(),
             Text(
               timeFormat.format(dt),
-              style: const TextStyle(
-                color: Color(0xFF5C4033),
+              style: TextStyle(
+                color: AppColors.textPrimaryFor(context),
                 fontWeight: FontWeight.w600,
               ),
             ),

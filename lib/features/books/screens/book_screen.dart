@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/theme/app_colors.dart';
@@ -9,13 +10,25 @@ import '../models/book_category.dart';
 import '../providers/book_provider.dart';
 
 /// Màn hình quản lý sách
-class BookScreen extends ConsumerWidget {
+class BookScreen extends ConsumerStatefulWidget {
   const BookScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final books = ref.watch(bookProvider);
+  ConsumerState<BookScreen> createState() => _BookScreenState();
+}
+
+class _BookScreenState extends ConsumerState<BookScreen> {
+  String? _selectedCategoryId;
+
+  @override
+  Widget build(BuildContext context) {
+    final allBooks = ref.watch(bookProvider);
     final categories = ref.watch(bookCategoryProvider);
+
+    final books = (_selectedCategoryId == null
+        ? allBooks
+        : allBooks.where((b) => b.categoryId == _selectedCategoryId).toList())
+      ..sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
 
     return Scaffold(
       appBar: AppBar(
@@ -26,38 +39,108 @@ class BookScreen extends ConsumerWidget {
             tooltip: 'Danh mục sách',
             onPressed: () => _showCategoryManager(context, ref, categories),
           ),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+            tooltip: 'Cài đặt',
+          ),
         ],
       ),
-      body: books.isEmpty
-          ? const EmptyStateWidget(
-              icon: Icons.menu_book_outlined,
-              title: 'Chưa có sách nào',
-              subtitle: 'Thêm sách bạn muốn đọc nhé 📚',
-            )
-          : ListView.builder(
-              padding: const EdgeInsets.all(AppSpacing.paddingStandard),
-              itemCount: books.length,
-              itemBuilder: (context, index) {
-                final book = books[index];
-                final cat = categories
-                    .where((c) => c.id == book.categoryId)
-                    .firstOrNull;
-                return _BookCard(
-                  book: book,
-                  categoryName: cat != null ? '${cat.emoji} ${cat.name}' : null,
-                  onToggleRead: () =>
-                      ref.read(bookProvider.notifier).toggleRead(book.id),
-                  onEdit: () =>
-                      _editBook(context, ref, book, categories),
-                  onDelete: () =>
-                      _deleteBook(context, ref, book),
-                );
-              },
-            ),
+      body: Column(
+        children: [
+          if (categories.isNotEmpty)
+            _buildCategoryChips(categories),
+          Expanded(
+            child: books.isEmpty
+                ? const EmptyStateWidget(
+                    icon: Icons.menu_book_outlined,
+                    title: 'Chưa có sách nào',
+                    subtitle: 'Thêm sách bạn muốn đọc nhé 📚',
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.all(AppSpacing.paddingStandard),
+                    itemCount: books.length,
+                    itemBuilder: (context, index) {
+                      final book = books[index];
+                      final cat = categories
+                          .where((c) => c.id == book.categoryId)
+                          .firstOrNull;
+                      return _BookCard(
+                        index: index + 1,
+                        book: book,
+                        categoryName:
+                            cat != null ? '${cat.emoji} ${cat.name}' : null,
+                        onToggleRead: () =>
+                            ref.read(bookProvider.notifier).toggleRead(book.id),
+                        onEdit: () =>
+                            _editBook(context, ref, book, categories),
+                        onDelete: () => _deleteBook(context, ref, book),
+                      );
+                    },
+                  ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _addBook(context, ref, categories),
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _buildCategoryChips(List<BookCategory> categories) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.paddingStandard,
+        vertical: AppSpacing.gapItem,
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: FilterChip(
+              label: const Text('Tất cả'),
+              selected: _selectedCategoryId == null,
+              onSelected: (_) => setState(() => _selectedCategoryId = null),
+              selectedColor: AppColors.primary.withValues(alpha: 0.3),
+              backgroundColor: AppColors.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(AppSpacing.borderRadiusButton),
+                side: BorderSide(
+                  color: _selectedCategoryId == null
+                      ? AppColors.primary
+                      : AppColors.primary.withValues(alpha: 0.3),
+                ),
+              ),
+            ),
+          ),
+          ...categories.map((cat) {
+            final isSelected = _selectedCategoryId == cat.id;
+            return Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: FilterChip(
+                label: Text('${cat.emoji} ${cat.name}'),
+                selected: isSelected,
+                onSelected: (_) =>
+                    setState(() => _selectedCategoryId = isSelected ? null : cat.id),
+                selectedColor: AppColors.primary.withValues(alpha: 0.3),
+                backgroundColor: AppColors.surface,
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(AppSpacing.borderRadiusButton),
+                  side: BorderSide(
+                    color: isSelected
+                        ? AppColors.primary
+                        : AppColors.primary.withValues(alpha: 0.3),
+                  ),
+                ),
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
@@ -67,8 +150,10 @@ class BookScreen extends ConsumerWidget {
     final result = await _showBookDialog(context, categories);
     if (result != null) {
       await ref.read(bookProvider.notifier).add(
-            title: result['title']!,
-            categoryId: result['categoryId'] ?? '',
+            title: result['title'] as String,
+            categoryId: result['categoryId'] as String? ?? '',
+            isPaperBook: result['isPaperBook'] as bool? ?? false,
+            isEbook: result['isEbook'] as bool? ?? false,
           );
     }
   }
@@ -76,11 +161,18 @@ class BookScreen extends ConsumerWidget {
   Future<void> _editBook(BuildContext context, WidgetRef ref, Book book,
       List<BookCategory> categories) async {
     final result = await _showBookDialog(context, categories,
-        title: book.title, categoryId: book.categoryId);
+        title: book.title,
+        categoryId: book.categoryId,
+        isPaperBook: book.isPaperBook,
+        isEbook: book.isEbook);
     if (result != null) {
       await ref.read(bookProvider.notifier).update(
             book.copyWith(
-                title: result['title'], categoryId: result['categoryId']),
+              title: result['title'] as String,
+              categoryId: result['categoryId'] as String,
+              isPaperBook: result['isPaperBook'] as bool,
+              isEbook: result['isEbook'] as bool,
+            ),
           );
     }
   }
@@ -110,17 +202,21 @@ class BookScreen extends ConsumerWidget {
     }
   }
 
-  Future<Map<String, String>?> _showBookDialog(
+  Future<Map<String, dynamic>?> _showBookDialog(
     BuildContext context,
     List<BookCategory> categories, {
     String title = '',
     String categoryId = '',
+    bool isPaperBook = false,
+    bool isEbook = false,
   }) {
     final titleController = TextEditingController(text: title);
     final formKey = GlobalKey<FormState>();
     String selectedCategoryId = categoryId;
+    bool paper = isPaperBook;
+    bool ebook = isEbook;
 
-    return showDialog<Map<String, String>>(
+    return showDialog<Map<String, dynamic>>(
       context: context,
       builder: (_) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
@@ -158,6 +254,23 @@ class BookScreen extends ConsumerWidget {
                   onChanged: (v) =>
                       setDialogState(() => selectedCategoryId = v ?? ''),
                 ),
+                const SizedBox(height: AppSpacing.gapItem),
+                CheckboxListTile(
+                  value: paper,
+                  onChanged: (v) => setDialogState(() => paper = v ?? false),
+                  title: const Text('📄 Sách giấy'),
+                  dense: true,
+                  contentPadding: EdgeInsets.zero,
+                  controlAffinity: ListTileControlAffinity.leading,
+                ),
+                CheckboxListTile(
+                  value: ebook,
+                  onChanged: (v) => setDialogState(() => ebook = v ?? false),
+                  title: const Text('📱 Ebook'),
+                  dense: true,
+                  contentPadding: EdgeInsets.zero,
+                  controlAffinity: ListTileControlAffinity.leading,
+                ),
               ],
             ),
           ),
@@ -171,6 +284,8 @@ class BookScreen extends ConsumerWidget {
                 Navigator.pop(context, {
                   'title': titleController.text.trim(),
                   'categoryId': selectedCategoryId,
+                  'isPaperBook': paper,
+                  'isEbook': ebook,
                 });
               },
               child: const Text('Lưu'),
@@ -195,6 +310,7 @@ class BookScreen extends ConsumerWidget {
 }
 
 class _BookCard extends StatelessWidget {
+  final int index;
   final Book book;
   final String? categoryName;
   final VoidCallback onToggleRead;
@@ -202,6 +318,7 @@ class _BookCard extends StatelessWidget {
   final VoidCallback onDelete;
 
   const _BookCard({
+    required this.index,
     required this.book,
     this.categoryName,
     required this.onToggleRead,
@@ -220,13 +337,31 @@ class _BookCard extends StatelessWidget {
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.paddingStandard, vertical: 4),
-        leading: GestureDetector(
-          onTap: onToggleRead,
-          child: Icon(
-            book.isRead ? Icons.check_circle : Icons.circle_outlined,
-            color: book.isRead ? AppColors.success : AppColors.textSecondary,
-            size: 28,
-          ),
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 24,
+              child: Text(
+                '$index',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(width: 8),
+            GestureDetector(
+              onTap: onToggleRead,
+              child: Icon(
+                book.isRead ? Icons.check_circle : Icons.circle_outlined,
+                color: book.isRead ? AppColors.success : AppColors.textSecondary,
+                size: 28,
+              ),
+            ),
+          ],
         ),
         title: Text(
           book.title,
@@ -236,11 +371,7 @@ class _BookCard extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        subtitle: categoryName != null
-            ? Text(categoryName!,
-                style: const TextStyle(
-                    color: AppColors.textSecondary, fontSize: 12))
-            : null,
+        subtitle: _buildSubtitle(),
         trailing: PopupMenuButton<String>(
           onSelected: (v) {
             if (v == 'edit') onEdit();
@@ -252,6 +383,18 @@ class _BookCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget? _buildSubtitle() {
+    final parts = <String>[];
+    if (categoryName != null) parts.add(categoryName!);
+    if (book.isPaperBook) parts.add('📄 Sách giấy');
+    if (book.isEbook) parts.add('📱 Ebook');
+    if (parts.isEmpty) return null;
+    return Text(
+      parts.join('  ·  '),
+      style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
     );
   }
 }

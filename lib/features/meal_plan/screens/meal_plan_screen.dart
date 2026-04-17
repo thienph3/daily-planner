@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/theme/app_colors.dart';
@@ -22,6 +23,13 @@ class MealPlanScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('🍱 Kế hoạch bữa ăn'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+            tooltip: 'Cài đặt',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

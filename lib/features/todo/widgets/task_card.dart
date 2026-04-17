@@ -17,6 +17,7 @@ const _priorityLabels = ['Thấp', 'Trung bình', 'Cao', 'Khẩn cấp'];
 /// Widget hiển thị một task đơn lẻ với swipe-to-delete.
 class TaskCard extends StatelessWidget {
   final Task task;
+  final bool showStrike;
   final VoidCallback onToggle;
   final VoidCallback onTap;
   final VoidCallback onDelete;
@@ -24,6 +25,7 @@ class TaskCard extends StatelessWidget {
   const TaskCard({
     super.key,
     required this.task,
+    this.showStrike = true,
     required this.onToggle,
     required this.onTap,
     required this.onDelete,
@@ -68,10 +70,10 @@ class TaskCard extends StatelessWidget {
                         task.title,
                         style: theme.textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w600,
-                          decoration: task.isCompleted
+                          decoration: task.isCompleted && showStrike
                               ? TextDecoration.lineThrough
                               : null,
-                          color: task.isCompleted
+                          color: task.isCompleted && showStrike
                               ? AppColors.textSecondary
                               : null,
                         ),

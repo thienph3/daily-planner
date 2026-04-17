@@ -29,7 +29,7 @@ class MoodCalendar extends ConsumerWidget {
 
     return Card(
       elevation: 2,
-      color: AppColors.surface,
+      color: AppColors.surfaceFor(context),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.borderRadiusCard),
       ),
@@ -55,7 +55,7 @@ class MoodCalendar extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-          icon: const Icon(Icons.chevron_left, color: AppColors.textPrimary),
+          icon: Icon(Icons.chevron_left, color: AppColors.textPrimaryFor(context)),
           onPressed: () {
             ref.read(moodProvider.notifier).changeMonth(
                   DateTime(month.year, month.month - 1),
@@ -65,12 +65,12 @@ class MoodCalendar extends ConsumerWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryFor(context),
                 fontWeight: FontWeight.bold,
               ),
         ),
         IconButton(
-          icon: const Icon(Icons.chevron_right, color: AppColors.textPrimary),
+          icon: Icon(Icons.chevron_right, color: AppColors.textPrimaryFor(context)),
           onPressed: () {
             ref.read(moodProvider.notifier).changeMonth(
                   DateTime(month.year, month.month + 1),
@@ -89,7 +89,7 @@ class MoodCalendar extends ConsumerWidget {
                   child: Text(
                     label,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.textSecondaryFor(context),
                           fontWeight: FontWeight.w600,
                         ),
                   ),
@@ -148,7 +148,7 @@ class MoodCalendar extends ConsumerWidget {
                           '$day',
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.textSecondary,
+                                    color: AppColors.textSecondaryFor(context),
                                   ),
                         ),
                 ),

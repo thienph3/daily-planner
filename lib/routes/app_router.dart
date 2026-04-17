@@ -20,8 +20,9 @@ import '../shared/widgets/more_menu_screen.dart';
 import '../shared/widgets/weekly_dashboard.dart';
 
 /// Cấu hình GoRouter.
-/// Bottom nav: 4 tab (To-Do, Lịch trình, Bữa ăn, Thêm).
-/// Nhật ký, Mood, Tiến độ, Cài đặt mở từ tab "Thêm" qua push.
+/// Bottom nav: 4 tab (To-Do, Sách, Lớp học, Thêm).
+/// Lịch trình, Bữa ăn, Nhật ký, Mood, Tiến độ, Đồ dùng, Cài đặt
+/// mở từ tab "Thêm" qua push.
 class AppRouter {
   AppRouter._();
 
@@ -36,6 +37,22 @@ class AppRouter {
         ),
       ),
       // Standalone routes (push từ tab Thêm)
+      GoRoute(
+        path: '/schedule',
+        pageBuilder: (context, state) =>
+            PageTransitionHelper.slideUpTransition(
+          key: state.pageKey,
+          child: const ScheduleScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/meal-plan',
+        pageBuilder: (context, state) =>
+            PageTransitionHelper.slideUpTransition(
+          key: state.pageKey,
+          child: const MealPlanScreen(),
+        ),
+      ),
       GoRoute(
         path: '/diary',
         pageBuilder: (context, state) =>
@@ -73,40 +90,12 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: '/books',
-        pageBuilder: (context, state) =>
-            PageTransitionHelper.slideUpTransition(
-          key: state.pageKey,
-          child: const BookScreen(),
-        ),
-      ),
-      GoRoute(
         path: '/belongings',
         pageBuilder: (context, state) =>
             PageTransitionHelper.slideUpTransition(
           key: state.pageKey,
           child: const BelongingScreen(),
         ),
-      ),
-      GoRoute(
-        path: '/classes',
-        pageBuilder: (context, state) =>
-            PageTransitionHelper.slideUpTransition(
-          key: state.pageKey,
-          child: const ClassListScreen(),
-        ),
-        routes: [
-          GoRoute(
-            path: ':classId',
-            pageBuilder: (context, state) {
-              final classId = state.pathParameters['classId']!;
-              return PageTransitionHelper.slideUpTransition(
-                key: state.pageKey,
-                child: ClassNotesScreen(classId: classId),
-              );
-            },
-          ),
-        ],
       ),
       GoRoute(
         path: '/settings',
@@ -122,22 +111,6 @@ class AppRouter {
                 PageTransitionHelper.slideUpTransition(
               key: state.pageKey,
               child: const CategoryManagementScreen(),
-            ),
-          ),
-          GoRoute(
-            path: 'books',
-            pageBuilder: (context, state) =>
-                PageTransitionHelper.slideUpTransition(
-              key: state.pageKey,
-              child: const BookScreen(),
-            ),
-          ),
-          GoRoute(
-            path: 'belongings',
-            pageBuilder: (context, state) =>
-                PageTransitionHelper.slideUpTransition(
-              key: state.pageKey,
-              child: const BelongingScreen(),
             ),
           ),
         ],
@@ -163,11 +136,11 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/schedule',
+                path: '/books',
                 pageBuilder: (context, state) =>
                     PageTransitionHelper.fadeTransition(
                   key: state.pageKey,
-                  child: const ScheduleScreen(),
+                  child: const BookScreen(),
                 ),
               ),
             ],
@@ -175,12 +148,24 @@ class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/meal-plan',
+                path: '/classes',
                 pageBuilder: (context, state) =>
                     PageTransitionHelper.fadeTransition(
                   key: state.pageKey,
-                  child: const MealPlanScreen(),
+                  child: const ClassListScreen(),
                 ),
+                routes: [
+                  GoRoute(
+                    path: ':classId',
+                    pageBuilder: (context, state) {
+                      final classId = state.pathParameters['classId']!;
+                      return PageTransitionHelper.slideUpTransition(
+                        key: state.pageKey,
+                        child: ClassNotesScreen(classId: classId),
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),

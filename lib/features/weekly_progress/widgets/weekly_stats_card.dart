@@ -31,6 +31,7 @@ class WeeklyStatsCard extends StatelessWidget {
         child: Column(
           children: [
             _buildStatRow(
+              context: context,
               emoji: '🍽️',
               label: 'Bữa ăn',
               count: mealCount,
@@ -39,6 +40,7 @@ class WeeklyStatsCard extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.gapItem),
             _buildStatRow(
+              context: context,
               emoji: '📝',
               label: 'Nhật ký',
               count: diaryCount,
@@ -52,6 +54,7 @@ class WeeklyStatsCard extends StatelessWidget {
   }
 
   Widget _buildStatRow({
+    required BuildContext context,
     required String emoji,
     required String label,
     required int count,
@@ -70,7 +73,7 @@ class WeeklyStatsCard extends StatelessWidget {
               style: GoogleFonts.nunito(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryFor(context),
               ),
             ),
             const Spacer(),
@@ -79,7 +82,7 @@ class WeeklyStatsCard extends StatelessWidget {
               style: GoogleFonts.nunito(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryFor(context),
               ),
             ),
           ],

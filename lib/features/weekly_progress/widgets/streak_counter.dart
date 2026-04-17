@@ -28,12 +28,12 @@ class StreakCounter extends StatelessWidget {
                 )
               : null,
         ),
-        child: streak > 0 ? _buildActiveStreak() : _buildEmptyStreak(),
+        child: streak > 0 ? _buildActiveStreak(context) : _buildEmptyStreak(context),
       ),
     );
   }
 
-  Widget _buildActiveStreak() {
+  Widget _buildActiveStreak(BuildContext context) {
     return Row(
       children: [
         const Text('🔥', style: TextStyle(fontSize: 32)),
@@ -45,7 +45,7 @@ class StreakCounter extends StatelessWidget {
               'Streak',
               style: GoogleFonts.nunito(
                 fontSize: 12,
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryFor(context),
               ),
             ),
             Text(
@@ -53,7 +53,7 @@ class StreakCounter extends StatelessWidget {
               style: GoogleFonts.nunito(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryFor(context),
               ),
             ),
           ],
@@ -62,7 +62,7 @@ class StreakCounter extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyStreak() {
+  Widget _buildEmptyStreak(BuildContext context) {
     return Row(
       children: [
         const Text('⭐', style: TextStyle(fontSize: 32)),
@@ -73,7 +73,7 @@ class StreakCounter extends StatelessWidget {
             style: GoogleFonts.nunito(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: AppColors.textSecondary,
+              color: AppColors.textSecondaryFor(context),
             ),
           ),
         ),

@@ -34,13 +34,13 @@ class _DiaryScreenState extends ConsumerState<DiaryScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSpacing.borderRadiusCard),
         ),
-        title: const Text(
+        title: Text(
           'Xóa nhật ký? 🗑️',
-          style: TextStyle(color: AppColors.textPrimary),
+          style: TextStyle(color: AppColors.textPrimaryFor(context)),
         ),
-        content: const Text(
+        content: Text(
           'Bạn có chắc muốn xóa bài nhật ký này không?',
-          style: TextStyle(color: AppColors.textSecondary),
+          style: TextStyle(color: AppColors.textSecondaryFor(context)),
         ),
         actions: [
           TextButton(
@@ -66,18 +66,25 @@ class _DiaryScreenState extends ConsumerState<DiaryScreen> {
     final entries = state.sortedEntries;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.backgroundFor(context),
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Nhật ký 📖',
           style: TextStyle(
-            color: AppColors.textPrimary,
+            color: AppColors.textPrimaryFor(context),
             fontWeight: FontWeight.bold,
             fontSize: 22,
           ),
         ),
         backgroundColor: AppColors.primary.withValues(alpha: 0.3),
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+            tooltip: 'Cài đặt',
+          ),
+        ],
       ),
       body: state.isLoading
           ? const ShimmerListWidget()

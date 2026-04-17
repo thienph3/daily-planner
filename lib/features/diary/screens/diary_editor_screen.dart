@@ -78,18 +78,18 @@ class _DiaryEditorScreenState extends ConsumerState<DiaryEditorScreen> {
     final displayDate = widget.entry?.date ?? DateTime.now();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.backgroundFor(context),
       appBar: AppBar(
         title: Text(
           _isEditing ? 'Sửa nhật ký ✏️' : 'Viết nhật ký ✨',
-          style: const TextStyle(
-            color: AppColors.textPrimary,
+          style: TextStyle(
+            color: AppColors.textPrimaryFor(context),
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: AppColors.primary.withValues(alpha: 0.3),
         elevation: 0,
-        iconTheme: const IconThemeData(color: AppColors.textPrimary),
+        iconTheme: IconThemeData(color: AppColors.textPrimaryFor(context)),
         actions: [
           IconButton(
             onPressed: _isSaving ? null : _save,
@@ -111,20 +111,20 @@ class _DiaryEditorScreenState extends ConsumerState<DiaryEditorScreen> {
             // Ngày
             Text(
               DateFormat('EEEE, dd/MM/yyyy', 'vi').format(displayDate),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 14,
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryFor(context),
                 fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: AppSpacing.sectionSpacing),
 
             // Mood selector
-            const Text(
+            Text(
               'Tâm trạng hôm nay',
               style: TextStyle(
                 fontSize: 16,
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryFor(context),
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -166,10 +166,10 @@ class _DiaryEditorScreenState extends ConsumerState<DiaryEditorScreen> {
               decoration: InputDecoration(
                 hintText: 'Hôm nay bạn cảm thấy thế nào? ✨',
                 hintStyle: TextStyle(
-                  color: AppColors.textSecondary.withValues(alpha: 0.6),
+                  color: AppColors.textSecondaryFor(context).withValues(alpha: 0.6),
                 ),
                 filled: true,
-                fillColor: AppColors.surface,
+                fillColor: AppColors.surfaceFor(context),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(
                     AppSpacing.borderRadiusInput,
@@ -197,9 +197,9 @@ class _DiaryEditorScreenState extends ConsumerState<DiaryEditorScreen> {
                   AppSpacing.paddingStandard,
                 ),
               ),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryFor(context),
                 height: 1.5,
               ),
             ),

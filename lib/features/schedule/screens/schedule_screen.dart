@@ -30,6 +30,13 @@ class ScheduleScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('📅 Thời gian biểu'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+            tooltip: 'Cài đặt',
+          ),
+        ],
       ),
       body: Column(
         children: [

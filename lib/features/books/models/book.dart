@@ -16,19 +16,36 @@ class Book extends HiveObject {
   @HiveField(3)
   final bool isRead;
 
+  @HiveField(4)
+  final bool isPaperBook;
+
+  @HiveField(5)
+  final bool isEbook;
+
   Book({
     required this.id,
     required this.title,
     this.categoryId = '',
     this.isRead = false,
+    this.isPaperBook = false,
+    this.isEbook = false,
   });
 
-  Book copyWith({String? id, String? title, String? categoryId, bool? isRead}) {
+  Book copyWith({
+    String? id,
+    String? title,
+    String? categoryId,
+    bool? isRead,
+    bool? isPaperBook,
+    bool? isEbook,
+  }) {
     return Book(
       id: id ?? this.id,
       title: title ?? this.title,
       categoryId: categoryId ?? this.categoryId,
       isRead: isRead ?? this.isRead,
+      isPaperBook: isPaperBook ?? this.isPaperBook,
+      isEbook: isEbook ?? this.isEbook,
     );
   }
 }

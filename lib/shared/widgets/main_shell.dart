@@ -35,12 +35,12 @@ class MainShell extends StatelessWidget {
             label: 'To-Do',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.schedule),
-            label: 'Lịch trình',
+            icon: Icon(Icons.menu_book_outlined),
+            label: 'Sách',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_outlined),
-            label: 'Bữa ăn',
+            icon: Icon(Icons.school_outlined),
+            label: 'Lớp học',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.grid_view_rounded),

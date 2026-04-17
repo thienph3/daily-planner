@@ -17,7 +17,16 @@ class ClassListScreen extends ConsumerWidget {
     final classes = ref.watch(classRoomProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('🏫 Lớp học')),
+      appBar: AppBar(
+        title: const Text('🏫 Lớp học'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+            tooltip: 'Cài đặt',
+          ),
+        ],
+      ),
       body: classes.isEmpty
           ? const EmptyStateWidget(
               icon: Icons.school_outlined,
@@ -193,17 +202,17 @@ class _ClassCard extends StatelessWidget {
                   children: [
                     Text(
                       classRoom.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,
-                        color: AppColors.textPrimary,
+                        color: AppColors.textPrimaryFor(context),
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       '$noteCount ghi chú',
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
+                      style: TextStyle(
+                        color: AppColors.textSecondaryFor(context),
                         fontSize: 13,
                       ),
                     ),

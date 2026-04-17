@@ -198,7 +198,7 @@ class _NoteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tagColor = _tagColors[note.tag] ?? AppColors.textSecondary;
+    final tagColor = _tagColors[note.tag] ?? AppColors.textSecondaryFor(context);
 
     return Card(
       margin: const EdgeInsets.only(bottom: AppSpacing.gapItem),
@@ -232,8 +232,8 @@ class _NoteCard extends StatelessWidget {
                 const Spacer(),
                 Text(
                   DateFormat('dd/MM/yyyy HH:mm').format(note.date),
-                  style: const TextStyle(
-                      color: AppColors.textSecondary, fontSize: 11),
+                  style: TextStyle(
+                      color: AppColors.textSecondaryFor(context), fontSize: 11),
                 ),
                 PopupMenuButton<String>(
                   onSelected: (v) {
@@ -250,8 +250,8 @@ class _NoteCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               note.content,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
+              style: TextStyle(
+                color: AppColors.textPrimaryFor(context),
                 fontSize: 15,
                 height: 1.4,
               ),

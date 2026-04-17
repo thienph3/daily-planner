@@ -70,7 +70,7 @@ class _MoodSelectorState extends ConsumerState<MoodSelector> {
             Text(
               'Chọn mood của bạn 🌟',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: AppColors.textPrimaryFor(context),
                     fontWeight: FontWeight.bold,
                   ),
             ),
@@ -125,9 +125,9 @@ class _MoodSelectorState extends ConsumerState<MoodSelector> {
       maxLines: 1,
       decoration: InputDecoration(
         hintText: 'Ghi chú ngắn... ✏️',
-        hintStyle: const TextStyle(color: AppColors.textSecondary),
+        hintStyle: TextStyle(color: AppColors.textSecondaryFor(context)),
         filled: true,
-        fillColor: AppColors.surface,
+        fillColor: AppColors.surfaceFor(context),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSpacing.borderRadiusInput),
           borderSide: BorderSide.none,
@@ -145,7 +145,7 @@ class _MoodSelectorState extends ConsumerState<MoodSelector> {
       onPressed: _selectedMood != null ? _saveMood : null,
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.textPrimary,
+        foregroundColor: AppColors.textPrimaryFor(context),
         disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.3),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSpacing.borderRadiusButton),

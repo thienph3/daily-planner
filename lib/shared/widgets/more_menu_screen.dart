@@ -9,19 +9,28 @@ class MoreMenuScreen extends StatelessWidget {
   const MoreMenuScreen({super.key});
 
   static const _menuItems = [
+    _MenuItem(emoji: '📅', label: 'Lịch trình', route: '/schedule'),
+    _MenuItem(emoji: '🍱', label: 'Bữa ăn', route: '/meal-plan'),
     _MenuItem(emoji: '📖', label: 'Nhật ký', route: '/diary'),
     _MenuItem(emoji: '🌈', label: 'Mood', route: '/mood'),
     _MenuItem(emoji: '📊', label: 'Tiến độ tuần', route: '/progress'),
-    _MenuItem(emoji: '📚', label: 'Sách', route: '/books'),
     _MenuItem(emoji: '🎒', label: 'Đồ dùng', route: '/belongings'),
-    _MenuItem(emoji: '🏫', label: 'Lớp học', route: '/classes'),
     _MenuItem(emoji: '⚙️', label: 'Cài đặt', route: '/settings'),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('🌸 Thêm')),
+      appBar: AppBar(
+        title: const Text('🌸 Thêm'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+            tooltip: 'Cài đặt',
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.paddingStandard),
         child: GridView.builder(
@@ -81,7 +90,7 @@ class _MenuCard extends StatelessWidget {
             Text(
               item.label,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: AppColors.textPrimaryFor(context),
                     fontWeight: FontWeight.w600,
                   ),
             ),

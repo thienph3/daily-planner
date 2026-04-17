@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/theme/app_colors.dart';
@@ -34,7 +35,16 @@ class BelongingScreen extends ConsumerWidget {
     final items = ref.watch(belongingProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('🎒 Đồ dùng')),
+      appBar: AppBar(
+        title: const Text('🎒 Đồ dùng'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+            tooltip: 'Cài đặt',
+          ),
+        ],
+      ),
       body: items.isEmpty
           ? const EmptyStateWidget(
               icon: Icons.inventory_2_outlined,
@@ -207,7 +217,7 @@ class _BelongingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final statusColor = _statusColors[item.status] ?? AppColors.textSecondary;
+    final statusColor = _statusColors[item.status] ?? AppColors.textSecondaryFor(context);
 
     return Card(
       margin: const EdgeInsets.only(bottom: AppSpacing.gapItem),
@@ -228,10 +238,10 @@ class _BelongingCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     item.name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
-                      color: AppColors.textPrimary,
+                      color: AppColors.textPrimaryFor(context),
                     ),
                   ),
                 ),
@@ -269,13 +279,13 @@ class _BelongingCard extends StatelessWidget {
                 if (item.location.isNotEmpty) ...[
                   const SizedBox(width: 8),
                   Icon(Icons.location_on_outlined,
-                      size: 14, color: AppColors.textSecondary),
+                      size: 14, color: AppColors.textSecondaryFor(context)),
                   const SizedBox(width: 2),
                   Flexible(
                     child: Text(
                       item.location,
-                      style: const TextStyle(
-                          color: AppColors.textSecondary, fontSize: 12),
+                      style: TextStyle(
+                          color: AppColors.textSecondaryFor(context), fontSize: 12),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -295,7 +305,7 @@ class _BelongingCard extends StatelessWidget {
                     onSelected: (_) => onStatusChange(s),
                     selectedColor: (_statusColors[s] ?? AppColors.accent)
                         .withValues(alpha: 0.3),
-                    backgroundColor: AppColors.surface,
+                    backgroundColor: AppColors.surfaceFor(context),
                     visualDensity: VisualDensity.compact,
                   ),
                 );

@@ -184,9 +184,9 @@ Future<void> _seedBooks() async {
       catId2, BookCategory(id: catId2, name: 'Tiểu thuyết', emoji: '📖'));
 
   final books = [
-    Book(id: _uuid.v4(), title: 'Totto-chan bên cửa sổ', categoryId: catId1, isRead: true),
-    Book(id: _uuid.v4(), title: 'Nhà giả kim', categoryId: catId2, isRead: false),
-    Book(id: _uuid.v4(), title: 'Dạy con kiểu Nhật', categoryId: catId1, isRead: false),
+    Book(id: _uuid.v4(), title: 'Totto-chan bên cửa sổ', categoryId: catId1, isRead: true, isPaperBook: true),
+    Book(id: _uuid.v4(), title: 'Nhà giả kim', categoryId: catId2, isRead: false, isEbook: true),
+    Book(id: _uuid.v4(), title: 'Dạy con kiểu Nhật', categoryId: catId1, isRead: false, isPaperBook: true, isEbook: true),
   ];
   for (final b in books) {
     await bookBox.put(b.id, b);

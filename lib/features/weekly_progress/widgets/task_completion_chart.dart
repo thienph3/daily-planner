@@ -31,14 +31,14 @@ class TaskCompletionChart extends StatelessWidget {
               style: GoogleFonts.nunito(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryFor(context),
               ),
             ),
             const SizedBox(height: AppSpacing.paddingStandard),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: dailyCompletions.map(_buildBar).toList(),
+              children: dailyCompletions.map((c) => _buildBar(context, c)).toList(),
             ),
           ],
         ),
@@ -46,7 +46,7 @@ class TaskCompletionChart extends StatelessWidget {
     );
   }
 
-  Widget _buildBar(DailyCompletion completion) {
+  Widget _buildBar(BuildContext context, DailyCompletion completion) {
     final percent = (completion.rate * 100).round();
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -56,7 +56,7 @@ class TaskCompletionChart extends StatelessWidget {
           style: GoogleFonts.nunito(
             fontSize: 10,
             fontWeight: FontWeight.w600,
-            color: AppColors.textSecondary,
+            color: AppColors.textSecondaryFor(context),
           ),
         ),
         const SizedBox(height: 4),
@@ -81,7 +81,7 @@ class TaskCompletionChart extends StatelessWidget {
           weekdayLabel(completion.date),
           style: GoogleFonts.nunito(
             fontSize: 12,
-            color: AppColors.textSecondary,
+            color: AppColors.textSecondaryFor(context),
           ),
         ),
       ],

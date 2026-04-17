@@ -64,6 +64,8 @@ class BookNotifier extends StateNotifier<List<Book>> {
     required String title,
     String categoryId = '',
     bool isRead = false,
+    bool isPaperBook = false,
+    bool isEbook = false,
   }) async {
     if (title.trim().isEmpty) return;
     final box = await HiveHelper.openBox<Book>(HiveHelper.bookBox);
@@ -72,6 +74,8 @@ class BookNotifier extends StateNotifier<List<Book>> {
       title: title.trim(),
       categoryId: categoryId,
       isRead: isRead,
+      isPaperBook: isPaperBook,
+      isEbook: isEbook,
     );
     await box.put(book.id, book);
     state = [...state, book];

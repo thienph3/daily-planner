@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../core/constants/app_spacing.dart';
@@ -19,18 +20,25 @@ class WeeklyDashboard extends ConsumerWidget {
     final data = ref.watch(weeklyProgressProvider);
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.backgroundFor(context),
       appBar: AppBar(
         title: Text(
           'Tiến độ tuần này 📊',
           style: GoogleFonts.nunito(
             fontSize: 22,
             fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+            color: AppColors.textPrimaryFor(context),
           ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+            tooltip: 'Cài đặt',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.paddingStandard),

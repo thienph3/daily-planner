@@ -28,7 +28,7 @@ class MoodWeeklyChart extends ConsumerWidget {
 
     return Card(
       elevation: 2,
-      color: AppColors.surface,
+      color: AppColors.surfaceFor(context),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.borderRadiusCard),
       ),
@@ -40,7 +40,7 @@ class MoodWeeklyChart extends ConsumerWidget {
             Text(
               'Tuần này 📊',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: AppColors.textPrimaryFor(context),
                     fontWeight: FontWeight.bold,
                   ),
             ),
@@ -78,7 +78,7 @@ class MoodWeeklyChart extends ConsumerWidget {
                               color: level > 0
                                   ? _barColors[level] ??
                                       AppColors.accent
-                                  : AppColors.textSecondary
+                                  : AppColors.textSecondaryFor(context)
                                       .withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -90,7 +90,7 @@ class MoodWeeklyChart extends ConsumerWidget {
                                 .textTheme
                                 .bodySmall
                                 ?.copyWith(
-                                  color: AppColors.textSecondary,
+                                  color: AppColors.textSecondaryFor(context),
                                   fontSize: 10,
                                 ),
                           ),

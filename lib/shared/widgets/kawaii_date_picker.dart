@@ -24,7 +24,7 @@ class KawaiiDatePicker extends ConsumerWidget {
       ),
       padding: const EdgeInsets.all(AppSpacing.paddingStandard),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.surfaceFor(context),
         borderRadius: BorderRadius.circular(AppSpacing.borderRadiusCard),
         boxShadow: [
           BoxShadow(
@@ -42,10 +42,10 @@ class KawaiiDatePicker extends ConsumerWidget {
               Expanded(
                 child: Text(
                   dateStr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
+                    color: AppColors.textPrimaryFor(context),
                   ),
                 ),
               ),

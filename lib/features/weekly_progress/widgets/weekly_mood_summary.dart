@@ -34,7 +34,7 @@ class WeeklyMoodSummary extends StatelessWidget {
               'Mood tuần này',
               style: GoogleFonts.nunito(
                 fontSize: 12,
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryFor(context),
               ),
             ),
             const SizedBox(height: 8),
@@ -46,7 +46,7 @@ class WeeklyMoodSummary extends StatelessWidget {
                 style: GoogleFonts.nunito(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.textPrimary,
+                  color: AppColors.textPrimaryFor(context),
                 ),
               ),
             ] else
@@ -54,7 +54,7 @@ class WeeklyMoodSummary extends StatelessWidget {
                 'Chưa có mood nào 🌸',
                 style: GoogleFonts.nunito(
                   fontSize: 14,
-                  color: AppColors.textSecondary,
+                  color: AppColors.textSecondaryFor(context),
                 ),
               ),
           ],

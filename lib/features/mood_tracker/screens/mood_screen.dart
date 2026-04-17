@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/theme/app_colors.dart';
@@ -31,16 +32,23 @@ class _MoodScreenState extends ConsumerState<MoodScreen> {
         title: Text(
           'Mood Tracker 🌈',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryFor(context),
                 fontWeight: FontWeight.bold,
               ),
         ),
         centerTitle: true,
-        backgroundColor: AppColors.background,
+        backgroundColor: AppColors.backgroundFor(context),
         elevation: 0,
         scrolledUnderElevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push('/settings'),
+            tooltip: 'Cài đặt',
+          ),
+        ],
       ),
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.backgroundFor(context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.paddingStandard),
         child: Column(
@@ -64,7 +72,7 @@ class _MoodScreenState extends ConsumerState<MoodScreen> {
 
     return Card(
       elevation: 2,
-      color: AppColors.surface,
+      color: AppColors.surfaceFor(context),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppSpacing.borderRadiusCard),
       ),
@@ -85,7 +93,7 @@ class _MoodScreenState extends ConsumerState<MoodScreen> {
                               .textTheme
                               .titleMedium
                               ?.copyWith(
-                                color: AppColors.textPrimary,
+                                color: AppColors.textPrimaryFor(context),
                                 fontWeight: FontWeight.bold,
                               ),
                         ),
@@ -95,7 +103,7 @@ class _MoodScreenState extends ConsumerState<MoodScreen> {
                             todayRecord.note,
                             style:
                                 Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      color: AppColors.textSecondary,
+                                      color: AppColors.textSecondaryFor(context),
                                     ),
                           ),
                         ],
@@ -111,7 +119,7 @@ class _MoodScreenState extends ConsumerState<MoodScreen> {
                   child: Text(
                     'Hôm nay bạn cảm thấy thế nào? 🌸',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: AppColors.textSecondary,
+                          color: AppColors.textSecondaryFor(context),
                         ),
                   ),
                 ),

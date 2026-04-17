@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
@@ -25,17 +26,27 @@ class TodoScreen extends ConsumerStatefulWidget {
 }
 
 class _TodoScreenState extends ConsumerState<TodoScreen> {
-  bool _initialized = false;
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => _initialize());
   }
 
+  /// Lấy ngày hôm nay theo GMT+7
+  String _todayKeyGmt7() {
+    final now = DateTime.now().toUtc().add(const Duration(hours: 7));
+    return 'carry_over_checked_${now.year}_${now.month}_${now.day}';
+  }
+
   Future<void> _initialize() async {
-    if (_initialized) return;
-    _initialized = true;
+    if (!mounted) return;
+
+    final prefs = await SharedPreferences.getInstance();
+    final key = _todayKeyGmt7();
+    if (prefs.getBool(key) == true) return;
+
+    // Đánh dấu đã kiểm tra hôm nay
+    await prefs.setBool(key, true);
 
     if (!mounted) return;
 
@@ -119,6 +130,7 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                         animate: task.isCompleted,
                         child: TaskCard(
                           task: task,
+                          showStrike: state.filter != FilterState.completed,
                           onToggle: () => ref
                               .read(todoProvider.notifier)
                               .toggleComplete(task.id),
@@ -172,7 +184,7 @@ class _ProgressSection extends StatelessWidget {
               Text(
                 '${state.completedCount}/${state.totalCount}',
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.textSecondaryFor(context),
                 ),
               ),
             ],
@@ -214,10 +226,10 @@ class _FilterChips extends StatelessWidget {
               selected: isSelected,
               onSelected: (_) => onChanged(filter),
               selectedColor: AppColors.primary.withValues(alpha: 0.3),
-              backgroundColor: AppColors.surface,
-              checkmarkColor: AppColors.textPrimary,
+              backgroundColor: AppColors.surfaceFor(context),
+              checkmarkColor: AppColors.textPrimaryFor(context),
               labelStyle: TextStyle(
-                color: AppColors.textPrimary,
+                color: AppColors.textPrimaryFor(context),
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                 fontSize: 13,
               ),
@@ -280,7 +292,7 @@ class _EmptyState extends StatelessWidget {
             Text(
               message,
               style: theme.textTheme.bodyLarge?.copyWith(
-                color: AppColors.textSecondary,
+                color: AppColors.textSecondaryFor(context),
               ),
               textAlign: TextAlign.center,
             ),
