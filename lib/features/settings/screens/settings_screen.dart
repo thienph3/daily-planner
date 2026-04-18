@@ -43,7 +43,7 @@ class SettingsScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.sectionSpacing),
           Center(
             child: Text(
-              'Kawaii Daily Planner v0.0.3 🌸',
+              'Kawaii Daily Planner v0.0.4 🌸',
               style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 12,

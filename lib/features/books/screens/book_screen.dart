@@ -25,10 +25,11 @@ class _BookScreenState extends ConsumerState<BookScreen> {
     final allBooks = ref.watch(bookProvider);
     final categories = ref.watch(bookCategoryProvider);
 
-    final books = (_selectedCategoryId == null
-        ? allBooks
-        : allBooks.where((b) => b.categoryId == _selectedCategoryId).toList())
-      ..sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+    final filtered = _selectedCategoryId == null
+        ? List<Book>.from(allBooks)
+        : allBooks.where((b) => b.categoryId == _selectedCategoryId).toList();
+    filtered.sort((a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()));
+    final books = filtered;
 
     return Scaffold(
       appBar: AppBar(
@@ -105,7 +106,7 @@ class _BookScreenState extends ConsumerState<BookScreen> {
               selected: _selectedCategoryId == null,
               onSelected: (_) => setState(() => _selectedCategoryId = null),
               selectedColor: AppColors.primary.withValues(alpha: 0.3),
-              backgroundColor: AppColors.surface,
+              backgroundColor: AppColors.surfaceFor(context),
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(AppSpacing.borderRadiusButton),
@@ -127,7 +128,7 @@ class _BookScreenState extends ConsumerState<BookScreen> {
                 onSelected: (_) =>
                     setState(() => _selectedCategoryId = isSelected ? null : cat.id),
                 selectedColor: AppColors.primary.withValues(alpha: 0.3),
-                backgroundColor: AppColors.surface,
+                backgroundColor: AppColors.surfaceFor(context),
                 shape: RoundedRectangleBorder(
                   borderRadius:
                       BorderRadius.circular(AppSpacing.borderRadiusButton),
@@ -337,41 +338,44 @@ class _BookCard extends StatelessWidget {
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.paddingStandard, vertical: 4),
-        leading: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: 24,
-              child: Text(
-                '$index',
-                style: TextStyle(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14,
+        leading: SizedBox(
+          width: 60,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 24,
+                child: Text(
+                  '$index',
+                  style: TextStyle(
+                    color: AppColors.textSecondaryFor(context),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
-            ),
-            const SizedBox(width: 8),
-            GestureDetector(
-              onTap: onToggleRead,
-              child: Icon(
-                book.isRead ? Icons.check_circle : Icons.circle_outlined,
-                color: book.isRead ? AppColors.success : AppColors.textSecondary,
-                size: 28,
+              const SizedBox(width: 8),
+              GestureDetector(
+                onTap: onToggleRead,
+                child: Icon(
+                  book.isRead ? Icons.check_circle : Icons.circle_outlined,
+                  color: book.isRead ? AppColors.success : AppColors.textSecondaryFor(context),
+                  size: 28,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         title: Text(
           book.title,
           style: TextStyle(
             decoration: book.isRead ? TextDecoration.lineThrough : null,
-            color: book.isRead ? AppColors.textSecondary : AppColors.textPrimary,
+            color: book.isRead ? AppColors.textSecondaryFor(context) : AppColors.textPrimaryFor(context),
             fontWeight: FontWeight.w600,
           ),
         ),
-        subtitle: _buildSubtitle(),
+        subtitle: _buildSubtitle(context),
         trailing: PopupMenuButton<String>(
           onSelected: (v) {
             if (v == 'edit') onEdit();
@@ -386,7 +390,7 @@ class _BookCard extends StatelessWidget {
     );
   }
 
-  Widget? _buildSubtitle() {
+  Widget? _buildSubtitle(BuildContext context) {
     final parts = <String>[];
     if (categoryName != null) parts.add(categoryName!);
     if (book.isPaperBook) parts.add('📄 Sách giấy');
@@ -394,7 +398,7 @@ class _BookCard extends StatelessWidget {
     if (parts.isEmpty) return null;
     return Text(
       parts.join('  ·  '),
-      style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
+      style: TextStyle(color: AppColors.textSecondaryFor(context), fontSize: 12),
     );
   }
 }
